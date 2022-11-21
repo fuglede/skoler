@@ -113,13 +113,6 @@ def update_value_table(institutions):
     ]
 
 
-def make_rows(transformation, institutions):
-    return [
-        {"Institution": institution} | dict(transformation(institution))
-        for institution in institutions
-    ]
-
-
 @app.callback(
     Output("percentile-table", "data"),
     Input("school-input", "value"),
