@@ -47,7 +47,7 @@ app.layout = html.Div(
         html.H4("Om"),
         dcc.Markdown(
             "Kilde: Uddannelsesstatistik ([trivsel](https://uddannelsesstatistik.dk/Pages/Reports/1599.aspx), "
-            + "[karakterer](https://uddannelsesstatistik.dk/Pages/Reports/1802.aspx), 2021-05-30). "
+            + "[karakterer](https://uddannelsesstatistik.dk/Pages/Reports/1802.aspx) (9. kl. obl. prøver), 2023-10-07). "
             + "Kildekode: [GitHub](https://github.com/fuglede/skoler)."
         ),
     ],
