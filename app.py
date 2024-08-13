@@ -71,7 +71,15 @@ def update_figure(input_values):
 
     # Use all but the first color for the vertical lines in the plots.
     base_color, *colors = px.colors.qualitative.Plotly
-
+    ys = {
+        'Generel trivsel': 100,
+        'Faglig trivsel': 90,
+        'Ro og orden': 170,
+        'Social trivsel': 200,
+        'Støtte og inspiration': 170,
+        'Karaktergennemsnit (2019-2023)': 70,
+        'Antal karakterer (2019-2023)': 80,
+    }
     for row, column_name in enumerate(df.columns, 1):
         fig.add_trace(
             go.Histogram(x=df[column_name], marker_color=base_color, showlegend=False),
@@ -90,7 +98,7 @@ def update_figure(input_values):
             fig.add_trace(
                 go.Scatter(
                     x=[x, x],
-                    y=[0, 120],
+                    y=[0, ys[column_name]],
                     mode="lines",
                     line={"color": colors[i % len(colors)]},
                     name=input_value,
