@@ -12,7 +12,11 @@ import plotly.io as pio
 from plotly.subplots import make_subplots
 
 server = Flask(__name__)
-app = dash.Dash(server=server, external_stylesheets=[dbc.themes.DARKLY])
+app = dash.Dash(
+    server=server,
+    external_stylesheets=[dbc.themes.DARKLY],
+    meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}],
+)
 app.title = "Trivsel – sammenlign skoler"
 pio.templates.default = "plotly_dark"
 
@@ -25,6 +29,9 @@ def make_table(element_id):
         columns=[
             {"name": name, "id": name} for name in ["Institution"] + list(df.columns)
         ],
+        style_as_list_view=True,
+        style_table={"overflowX": "auto"},
+        style_cell={"fontSize": 14},
     )
 
 
@@ -47,7 +54,7 @@ app.layout = html.Div(
         html.H4("Om"),
         dcc.Markdown(
             "Kilde: Uddannelsesstatistik ([trivsel](https://uddannelsesstatistik.dk/Pages/Reports/1599.aspx), "
-            + "[karakterer](https://uddannelsesstatistik.dk/Pages/Reports/1802.aspx) (9. kl. obl. prøver), 2024-08-13). "
+            + "[karakterer](https://uddannelsesstatistik.dk/Pages/Reports/1802.aspx) (9. kl. obl. prøver 2019-2023), 2024-08-13). "
             + "Kildekode: [GitHub](https://github.com/fuglede/skoler)."
         ),
     ],
@@ -72,13 +79,13 @@ def update_figure(input_values):
     # Use all but the first color for the vertical lines in the plots.
     base_color, *colors = px.colors.qualitative.Plotly
     ys = {
-        'Generel trivsel': 100,
-        'Faglig trivsel': 90,
-        'Ro og orden': 170,
-        'Social trivsel': 200,
-        'Støtte og inspiration': 170,
-        'Karaktergennemsnit (2019-2023)': 70,
-        'Antal karakterer (2019-2023)': 80,
+        "Generel trivsel": 100,
+        "Faglig trivsel": 90,
+        "Ro og orden": 170,
+        "Social trivsel": 200,
+        "Støtte og inspiration": 170,
+        "Karaktergennemsnit": 70,
+        "Antal karakterer": 80,
     }
     for row, column_name in enumerate(df.columns, 1):
         fig.add_trace(
@@ -89,6 +96,7 @@ def update_figure(input_values):
         # Disable zooming and panning on the plot we're building.
         fig["layout"][f"xaxis{row}"]["fixedrange"] = True
         fig["layout"][f"yaxis{row}"]["fixedrange"] = True
+        fig["layout"]["margin"] = {"l": 0, "r": 0}
         for i, input_value in enumerate(input_values):
             x = df.loc[input_value, column_name]
             # We could use fig.add_vline here to add the vertical lines, but that
@@ -106,6 +114,9 @@ def update_figure(input_values):
                 ),
                 row=row,
                 col=1,
+            )
+            fig.update_layout(
+                legend=dict(yanchor="bottom", y=1.02, xanchor="right", x=1),
             )
     return fig
 
