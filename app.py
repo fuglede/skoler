@@ -74,7 +74,9 @@ def update_figure(input_values):
         vertical_spacing=0.05,
     )
 
-    fig.update_layout(height=2100, paper_bgcolor="#222", plot_bgcolor="#222")
+    fig.update_layout(
+        height=2100, paper_bgcolor="#222", plot_bgcolor="#222", dragmode=False
+    )
 
     # Use all but the first color for the vertical lines in the plots.
     base_color, *colors = px.colors.qualitative.Plotly
